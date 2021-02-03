@@ -22,8 +22,9 @@ spec:
   tls:
     {{- range .Values.pusher.ingress.tls }}
     - hosts:
-        {{- range .hosts }}
-        - {{ . | quote }}
+        {{- range .hosts }}        
+        {{ $fqdn := printf "%s.%s" . $.Values.domain -}}
+        - {{ $fqdn }}
         {{- end }}
       secretName: {{ .secretName }}
     {{- end }}

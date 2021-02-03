@@ -16,18 +16,23 @@ Get Helm : https://helm.sh/docs/intro/install/
 
 1. Clone the repo
 2. cd into ./k8s/helm/workadventure
-
-Install workadventure in tag defined in [Chart](./Chart.yaml)
+3. Install workadventure in tag defined in [Chart](./Chart.yaml) :
 ```
 helm install myrelease .
 ```
+4. Wait a few seconds for all pods to start
+5. With self-signed TLS certificates, make them trust by your browser by going to https://maps.workadventure.minikube/, https://pusher.workadventure.minikube/
+6. Then you can start by going to https://play.workadventure.minikube/
 
-After a few seconds, you can start rooms by going to http://play.workadventure.minikube/
-By default, Workadventure will repond to [play | maps | pusher | uploader | api].workadventure.minikube.
 
-You can also start another universe with another map. For example : http://play.workadventure.minikube/_/anyuniverse/gparant.github.io/tcm-client/Demo/demo-v1.json
+By default, Workadventure will respond to https://[play | maps | pusher | uploader | api].workadventure.minikube
 
-### Install workadventure in a specific Git branch (from https://github.com/thecodingmachine/workadventure)
+You can also start another universe with another map. For example : https://play.workadventure.minikube/_/anyuniverse/gparant.github.io/tcm-client/Demo/demo-v1.json
+
+### Install workadventure in a specific Git branch 
+
+Branches are those in upstream repo (from https://github.com/thecodingmachine/workadventure)
+
 ```
 helm install myrelease . --set image.tag=develop
 ```
@@ -37,7 +42,7 @@ helm install myrelease . --set image.tag=develop
 helm install myrelease . --set domain=mydomain.com
 ```
 
-It will then be available at http://play.mydomain.com/_/global/maps.mydomain.com/Floor0/floor0.json
+It will then be available at https://play.mydomain.com/_/global/maps.mydomain.com/Floor0/floor0.json
 
 
 ## Customise
@@ -46,7 +51,7 @@ You can override any values defined [values.yaml](./values.yaml). Read Helm doc 
 
 ## TODO
 
-[ ] TLS in order to make camera and mic working
+[X] TLS in order to make camera and mic working
 
 [ ] Depend from Jitsi Helm to get full self-hosting
 
