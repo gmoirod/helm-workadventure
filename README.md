@@ -48,8 +48,8 @@ You can override any values defined [values.yaml](./values.yaml). Read Helm doc 
 
 [ ] TLS in order to make camera and mic working
 
-[ ] How to create private rooms designated by an organization/world/room ?
-
 [ ] Depend from Jitsi Helm to get full self-hosting
 
 [ ] Simplify templates ?
+
+[ ] CI/CD this Chart
