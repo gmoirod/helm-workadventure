@@ -53,6 +53,10 @@ spec:
           env:
             - name: 'DEBUG_MODE'
               value: "{{- .Values.env.debugMode -}}"
+            - name: 'API_URL'
+              value: {{ include "workadventure.pusher.apiUrl" . }}
+            - name: 'FRONT_URL'
+              value: {{ include "workadventure.frontUrl" . }}
               #TODO : ADMIN_API_URL
               #TODO : API_URL
             {{ toYaml .Values.maps.extraEnvs | nindent 12 }}

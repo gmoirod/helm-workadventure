@@ -54,7 +54,7 @@ spec:
           env:
             - name: 'DEBUG_MODE'
               value: "{{- .Values.env.debugMode -}}"
-            - name: 'API_URL'
+            - name: 'PUSHER_URL'
               value: {{ include "workadventure.pusherUrl" . }}
             - name: 'UPLOADER_URL'
               value: {{ include "workadventure.uploaderUrl" . }}
@@ -73,7 +73,13 @@ spec:
             - name: 'TURN_PASSWORD'
               value: "{{- .Values.front.env.turnPassword -}}"
             - name: "START_ROOM_URL"
-              value: {{ include "workadventure.startRoomUrl" . }}
+              value: "{{- .Values.front.env.startRoomUrl -}}"
+            - name: 'OPID_LOGIN_SCREEN_PROVIDER'
+              value: "{{ include."workadventure.domain"  . }} + login-screen
+            - name: 'DISABLE_ANONYMOUS'
+              value: "true"
+            - name: 'ICON_URL'
+              value: "{{ .Values.front.env.iconUrl -}}"       
             {{ toYaml .Values.front.extraEnvs | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

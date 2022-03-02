@@ -65,7 +65,16 @@ spec:
               value: "{{- .Values.env.secretJitsiKey -}}"
             - name: 'API_URL'
               value: {{ include "workadventure.pusher.apiUrl" . }}
-              #TODO : ADMIN_API_URL
+            - name: 'FRONT_URL'
+              value: {{ include "workadventure.frontUrl" . }}
+            - name: 'OPID_CLIENT_ID'
+              value: "{{- .Values.env.OpidClientId -}}"
+            - name: 'OPID_CLIENT_SECRET'
+              value: "{{- .Values.env.OpidClientSecret -}}"
+            - name: 'OPID_CLIENT_ISSUER'
+              value: "{{- .Values.env.OpidClientIssuer -}}"
+            - name: 'DISABLE_ANONYMOUS'
+              value: "true"
             {{ toYaml .Values.pusher.extraEnvs | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

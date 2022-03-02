@@ -101,11 +101,15 @@ Maps object names
 {{- end }}
 
 {{- define "workadventure.pusherUrl" -}}
-{{- printf "%s.%s" .Values.pusher.name .Values.domain }}
+{{- printf "//%s.%s" .Values.pusher.name .Values.domain }}
 {{- end }}
 
 {{- define "workadventure.uploaderUrl" -}}
-{{- printf "%s.%s" .Values.uploader.name .Values.domain }}
+{{- printf "//%s.%s" .Values.uploader.name .Values.domain }}
+{{- end }}
+
+{{- define "workadventure.frontUrl" -}}
+{{- printf "https://%s.%s" .Values.front.env.name .Values.domain }}
 {{- end }}
 
 {{- define "workadventure.pusher.apiUrl" -}}
@@ -116,4 +120,11 @@ Maps object names
 {{- $path := .Values.front.env.startRoomPath }}
 {{- $universe := .Values.front.env.startRoomUniverse }}
 {{- printf "/_/%s/%s%s" $universe (include "workadventure.mapsUrl" .) $path }}
+{{- end }}
+
+{{/*
+Icon object names
+*/}}
+{{- define "workadventure.icon.name" -}}
+{{- printf "%s-%s" (include "workadventure.fullname" .) .Values.icon.name | trunc 63 | trimSuffix "-" }}
 {{- end }}
