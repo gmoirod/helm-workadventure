@@ -73,11 +73,11 @@ spec:
             - name: 'TURN_PASSWORD'
               value: "{{- .Values.front.env.turnPassword -}}"
             - name: "START_ROOM_URL"
-              value: "{{- .Values.front.env.startRoomUrl -}}"
+              value: {{ include "workadventure.startRoomUrl" . }}
             - name: 'OPID_LOGIN_SCREEN_PROVIDER'
               value: "{{ include."workadventure.domain"  . }} + login-screen
             - name: 'DISABLE_ANONYMOUS'
-              value: "true"
+              value: "{{- .Values.env.disableAnonymous -}}"
             - name: 'ICON_URL'
               value: "{{ .Values.front.env.iconUrl -}}"       
             {{ toYaml .Values.front.extraEnvs | nindent 12 }}

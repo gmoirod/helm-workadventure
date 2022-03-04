@@ -57,8 +57,6 @@ spec:
               value: {{ include "workadventure.pusher.apiUrl" . }}
             - name: 'FRONT_URL'
               value: {{ include "workadventure.frontUrl" . }}
-              #TODO : ADMIN_API_URL
-              #TODO : API_URL
             {{ toYaml .Values.maps.extraEnvs | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

@@ -68,13 +68,13 @@ spec:
             - name: 'FRONT_URL'
               value: {{ include "workadventure.frontUrl" . }}
             - name: 'OPID_CLIENT_ID'
-              value: "{{- .Values.env.OpidClientId -}}"
+              value: "{{- .Values.pusher.env.opidClientId -}}"
             - name: 'OPID_CLIENT_SECRET'
-              value: "{{- .Values.env.OpidClientSecret -}}"
+              value: "{{- .Values.pusher.env.opidClientSecret -}}"
             - name: 'OPID_CLIENT_ISSUER'
-              value: "{{- .Values.env.OpidClientIssuer -}}"
+              value: "{{- .Values.pusher.env.opidClientIssuer -}}"
             - name: 'DISABLE_ANONYMOUS'
-              value: "true"
+              value: "{{- .Values.env.disableAnonymous -}}"
             {{ toYaml .Values.pusher.extraEnvs | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

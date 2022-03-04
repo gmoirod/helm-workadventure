@@ -20,6 +20,7 @@ env:
   secretJitsiKey: ""
   jitsiPrivateMode: false
   debugMode: false
+  disableAnonymous: false
 
 #################### workadventure-back ####################
 back:
@@ -78,6 +79,7 @@ front:
     turnPassword: "WorkAdventure123"
     startRoomUniverse: "global"
     startRoomPath: "/Floor0/floor0.json"
+    disableAnonymous: "true"
 
   extraEnvs: 
     - name: KEY
@@ -119,11 +121,11 @@ pusher:
     repository: "thecodingmachine/workadventure-pusher"
     pullPolicy: IfNotPresent
 
-  # Env front
+  # Env pusher
   env: 
-  OpidClientId: ""
-  OpidClientSecret: ""
-  OpidClientIssuer: ""
+    opidClientId:
+    opidClientSecret:
+    opidClientIssuer:
 
   extraEnvs: 
     - name: KEY
@@ -237,6 +239,50 @@ maps:
         hosts:
           - maps 
 #################### workadventure-maps ####################
+
+#################### workadventure-icon ####################
+icon:
+  name: "icon"
+  replicaCount: 1
+
+  image:
+    repository: "thecodingmachine/workadventure-icon"
+    pullPolicy: IfNotPresent
+
+
+  # Env front
+  env: {}
+
+  extraEnvs:
+    - name: KEY
+      value: value
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 1
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  ingress:
+    enabled: true
+    annotations:
+      #kubernetes.io/ingress.class: nginx
+      #kubernetes.io/tls-acme: "true"
+
+    hosts:
+      - host: icon
+        paths: [/]
+    tls:
+      - secretName: icon-tls
+        hosts:
+          - icon
+  
+#################### workadventure-icon ####################
 
 serviceAccount:
   # Specifies whether a service account should be created

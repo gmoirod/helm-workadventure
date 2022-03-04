@@ -109,7 +109,7 @@ Maps object names
 {{- end }}
 
 {{- define "workadventure.frontUrl" -}}
-{{- printf "https://%s.%s" .Values.front.env.name .Values.domain }}
+{{- printf "//%s.%s" .Values.front.env.name .Values.domain }}
 {{- end }}
 
 {{- define "workadventure.pusher.apiUrl" -}}
