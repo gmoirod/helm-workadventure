@@ -1,6 +1,6 @@
 # Helm Chart to deploy Workadventure
 
-This is a Helm Chart to deploy [WorkAdventure](https://github.com/thecodingmachine/workadventure) (fixed for now with v1.15.6).
+This is a Helm Chart to deploy [WorkAdventure](https://github.com/thecodingmachine/workadventure) in version 1.15+.
 
 Mainly inspired by https://github.com/thecodingmachine/workadventure/tree/develop/contrib/docker
 

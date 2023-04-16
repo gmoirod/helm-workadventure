@@ -21,6 +21,7 @@ serviceAccount:
 # Enable TLS and give a secret containing TLS cert/key
 ingress:
   enabled: true
+  annotations: {}
   tls:
     enabled: true
     existingSecret: ""
@@ -44,6 +45,7 @@ redis:
     create: false
     name: ""
 
+podAnnotations: {}
 
 
 
@@ -138,7 +140,7 @@ maps:
 
 
 
-podAnnotations: {}
+
 
 podSecurityContext: {}
   # fsGroup: 2000

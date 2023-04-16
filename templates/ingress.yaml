@@ -4,6 +4,10 @@ kind: Ingress
 metadata:
   labels:
     {{- include "workadventure.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   name: {{ include "workadventure.fullname" . }}
 spec:
   {{- if .Values.ingress.tls.enabled }}
