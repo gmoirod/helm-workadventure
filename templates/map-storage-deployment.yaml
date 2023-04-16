@@ -2,21 +2,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    component: map-storage
-    app: workadventure
-  name: map-storage
+    {{- include "workadventure.map-storage.labels" . | nindent 4 }}
+  name: {{ include "workadventure.map-storage.name" . }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      component: map-storage
-      app: workadventure
+      {{- include "workadventure.map-storage.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        component: map-storage
-        app: workadventure
+        {{- include "workadventure.map-storage.selectorLabels" . | nindent 8 }}
     spec:
+      serviceAccountName: {{ include "workadventure.serviceAccountName" . }}
       containers:
         - name: map-storage
           image: {{ .Values.global.imageRegistry }}/thecodingmachine/workadventure-map-storage:{{ .Chart.AppVersion }}

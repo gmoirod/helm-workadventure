@@ -2,9 +2,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
-    component: ejabberd
-    app: workadventure
-  name: ejabberd
+    {{- include "workadventure.ejabberd.labels" . | nindent 4 }}
+  name: {{ include "workadventure.ejabberd.name" . }}
 data:
   ejabberd.template.yml: |
     ###

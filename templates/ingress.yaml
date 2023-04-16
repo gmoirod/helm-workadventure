@@ -3,69 +3,69 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   labels:
-    app: workadventure
-  name: workadventure
+    {{- include "workadventure.labels" . | nindent 4 }}
+  name: {{ include "workadventure.fullname" . }}
 spec:
   {{- if .Values.ingress.tls.enabled }}
   tls:
   - hosts :
-    - chat.{{ .Values.global.clusterDomain }}
-    - play.{{ .Values.global.clusterDomain }}
-    - icon.{{ .Values.global.clusterDomain }}
-    - map-storage.{{ .Values.global.clusterDomain }}
-    - ejabberd.{{ .Values.global.clusterDomain }}
+    - chat.{{ .Values.domain }}
+    - play.{{ .Values.domain }}
+    - icon.{{ .Values.domain }}
+    - map-storage.{{ .Values.domain }}
+    - ejabberd.{{ .Values.domain }}
   {{- if .Values.ingress.tls.existingSecret }}
     secretName: {{ .Values.ingress.tls.existingSecret }}
   {{- end }}
   {{- end }}
 
   rules:
-  - host: chat.{{ .Values.global.clusterDomain }}
+  - host: chat.{{ .Values.domain }}
     http:
       paths:
       - backend:
           service:
-            name: chat
+            name: {{ include "workadventure.chat.name" . }}
             port:
               number: 80
         path: /
         pathType: Prefix
-  - host: play.{{ .Values.global.clusterDomain }}
+  - host: play.{{ .Values.domain }}
     http:
       paths:
       - backend:
           service:
-            name: play
+            name: {{ include "workadventure.play.name" . }}
             port:
               number: 3000
         path: /
         pathType: Prefix
-  - host: icon.{{ .Values.global.clusterDomain }}
+  - host: icon.{{ .Values.domain }}
     http:
       paths:
       - backend:
           service:
-            name: icon
+            name: {{ include "workadventure.icon.name" . }}
             port:
               number: 8080
         path: /
         pathType: Prefix
-  - host: map-storage.{{ .Values.global.clusterDomain }}
+  - host: map-storage.{{ .Values.domain }}
     http:
       paths:
       - backend:
           service:
-            name: map-storage
+            name: {{ include "workadventure.map-storage.name" . }}
             port:
               number: 3000
         path: /
         pathType: Prefix
-  - host: ejabberd.{{ .Values.global.clusterDomain }}
+  - host: ejabberd.{{ .Values.domain }}
     http:
       paths:
       - backend:
           service:
-            name: ejabberd
+            name: {{ include "workadventure.ejabberd.name" . }}
             port:
               number: 5443
         path: /

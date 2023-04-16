@@ -2,32 +2,30 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    component: play
-    app: workadventure
-  name: play
+    {{- include "workadventure.play.labels" . | nindent 4 }}
+  name: {{ include "workadventure.play.name" . }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      component: play
-      app: workadventure
+      {{- include "workadventure.play.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
-        component: play
-        app: workadventure
+        {{- include "workadventure.play.selectorLabels" . | nindent 8 }}
     spec:
+      serviceAccountName: {{ include "workadventure.serviceAccountName" . }}
       containers:
         - name: play
           image: {{ .Values.global.imageRegistry }}/thecodingmachine/workadventure-play:{{ .Chart.AppVersion }}
           envFrom:
             - configMapRef:
-                name: workadventure
+                name: {{ include "workadventure.fullname" . }}
             - secretRef:
-                name: workadventure
+                name: {{ include "workadventure.fullname" . }}
           ports:
             - containerPort: 3000
           resources: {}

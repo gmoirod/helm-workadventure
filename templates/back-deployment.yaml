@@ -23,18 +23,18 @@ spec:
           image: {{ .Values.global.imageRegistry }}/thecodingmachine/workadventure-back:{{ .Chart.AppVersion }}
           envFrom:
             - configMapRef:
-                name: workadventure
+                name: {{ include "workadventure.fullname" . }}
             - secretRef:
-                name: workadventure
+                name: {{ include "workadventure.fullname" . }}
           env:
             - name: MAP_STORAGE_URL
               value: map-storage:50053
             - name: PLAY_URL
               value: http://play:3000
             - name: PUBLIC_MAP_STORAGE_URL
-              value: https://map-storage.{{ .Values.global.clusterDomain }}
+              value: https://map-storage.{{ .Values.domain }}
             - name: REDIS_HOST
-              value: {{ printf "%s-redis-headless" (include "workadventure.fullname" .) }}
+              value: {{ printf "%s-redis-headless" .Release.Name }}
             - name: REDIS_PORT
               value: "6379"
           ports:

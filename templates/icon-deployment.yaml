@@ -2,21 +2,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    component: icon
-    app: workadventure
-  name: icon
+    {{- include "workadventure.icon.labels" . | nindent 4 }}
+  name: {{ include "workadventure.icon.name" . }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      component: icon
-      app: workadventure
+      {{- include "workadventure.icon.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        component: icon
-        app: workadventure
+        {{- include "workadventure.icon.selectorLabels" . | nindent 8 }}
     spec:
+      serviceAccountName: {{ include "workadventure.serviceAccountName" . }}
       containers:
         - name: icon
           image: {{ .Values.global.imageRegistry }}/matthiasluedtke/iconserver:v3.13.0

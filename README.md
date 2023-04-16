@@ -29,7 +29,7 @@ You can also start another universe with another map. For example : https://play
 
 ### Install workadventure with a specific domain
 ```
-helm install myrelease . --set global.clusterDomain=mydomain.com,redis.clusterDomain=mydomain.com
+helm install myrelease . --set domain=mydomain.com
 ```
 
 It will then be available at https://play.mydomain.com/_/global/maps.mydomain.com/Floor0/floor0.json
@@ -43,6 +43,8 @@ It will then be available at https://play.mydomain.com/_/global/maps.mydomain.co
 You can override any values defined [values.yaml](./values.yaml). Read Helm doc to know how.
 
 ## TODO
+
+[ ] Give a way to use Cloud LoadBalancers by allowing to use NodePort and Loadbalancer services
 
 [ ] Depend from cert-manager to automate TLS acquisition
 

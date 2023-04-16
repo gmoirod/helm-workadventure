@@ -60,18 +60,6 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
-
-
-
-
-
-
-
-
-
-
-
-
 #######################
 
 {{/*
@@ -100,51 +88,151 @@ Common labels
 #######################
 
 {{/*
-Front object names
+Chat object names
 */}}
-{{- define "workadventure.front.name" -}}
-{{- printf "%s-%s" (include "workadventure.fullname" .) .Values.front.name | trunc 63 | trimSuffix "-" }}
+{{- define "workadventure.chat.name" -}}
+{{- printf "%s-%s" (include "workadventure.fullname" .) "chat" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
-Pusher object names
+Selector labels
 */}}
-{{- define "workadventure.pusher.name" -}}
-{{- printf "%s-%s" (include "workadventure.fullname" .) .Values.pusher.name | trunc 63 | trimSuffix "-" }}
+{{- define "workadventure.chat.selectorLabels" -}}
+{{ include "workadventure.selectorLabels" . }}
+app.kubernetes.io/component: chat
 {{- end }}
 
 {{/*
-Uploader object names
+Common labels
+*/}}
+{{- define "workadventure.chat.labels" -}}
+{{ include "workadventure.labels" . }}
+{{ include "workadventure.chat.selectorLabels" . }}
+{{- end }}
+
+#######################
+
+{{/*
+ejabberd object names
+*/}}
+{{- define "workadventure.ejabberd.name" -}}
+{{- printf "%s-%s" (include "workadventure.fullname" .) "ejabberd" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "workadventure.ejabberd.selectorLabels" -}}
+{{ include "workadventure.selectorLabels" . }}
+app.kubernetes.io/component: ejabberd
+{{- end }}
+
+{{/*
+Common labels
+*/}}
+{{- define "workadventure.ejabberd.labels" -}}
+{{ include "workadventure.labels" . }}
+{{ include "workadventure.ejabberd.selectorLabels" . }}
+{{- end }}
+
+#######################
+
+{{/*
+icon object names
+*/}}
+{{- define "workadventure.icon.name" -}}
+{{- printf "%s-%s" (include "workadventure.fullname" .) "icon" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "workadventure.icon.selectorLabels" -}}
+{{ include "workadventure.selectorLabels" . }}
+app.kubernetes.io/component: icon
+{{- end }}
+
+{{/*
+Common labels
+*/}}
+{{- define "workadventure.icon.labels" -}}
+{{ include "workadventure.labels" . }}
+{{ include "workadventure.icon.selectorLabels" . }}
+{{- end }}
+
+#######################
+
+{{/*
+map-storage object names
+*/}}
+{{- define "workadventure.map-storage.name" -}}
+{{- printf "%s-%s" (include "workadventure.fullname" .) "map-storage" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "workadventure.map-storage.selectorLabels" -}}
+{{ include "workadventure.selectorLabels" . }}
+app.kubernetes.io/component: map-storage
+{{- end }}
+
+{{/*
+Common labels
+*/}}
+{{- define "workadventure.map-storage.labels" -}}
+{{ include "workadventure.labels" . }}
+{{ include "workadventure.map-storage.selectorLabels" . }}
+{{- end }}
+
+
+#######################
+
+{{/*
+play object names
+*/}}
+{{- define "workadventure.play.name" -}}
+{{- printf "%s-%s" (include "workadventure.fullname" .) "play" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "workadventure.play.selectorLabels" -}}
+{{ include "workadventure.selectorLabels" . }}
+app.kubernetes.io/component: play
+{{- end }}
+
+{{/*
+Common labels
+*/}}
+{{- define "workadventure.play.labels" -}}
+{{ include "workadventure.labels" . }}
+{{ include "workadventure.play.selectorLabels" . }}
+{{- end }}
+
+#######################
+
+{{/*
+uploader object names
 */}}
 {{- define "workadventure.uploader.name" -}}
-{{- printf "%s-%s" (include "workadventure.fullname" .) .Values.uploader.name | trunc 63 | trimSuffix "-" }}
+{{- printf "%s-%s" (include "workadventure.fullname" .) "uploader" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
-Maps object names
+Selector labels
 */}}
-{{- define "workadventure.maps.name" -}}
-{{- printf "%s-%s" (include "workadventure.fullname" .) .Values.maps.name | trunc 63 | trimSuffix "-" }}
+{{- define "workadventure.uploader.selectorLabels" -}}
+{{ include "workadventure.selectorLabels" . }}
+app.kubernetes.io/component: uploader
 {{- end }}
 
-{{- define "workadventure.mapsUrl" -}}
-{{- printf "%s.%s" .Values.maps.name .Values.global.clusterDomain }}
+{{/*
+Common labels
+*/}}
+{{- define "workadventure.uploader.labels" -}}
+{{ include "workadventure.labels" . }}
+{{ include "workadventure.uploader.selectorLabels" . }}
 {{- end }}
 
-{{- define "workadventure.pusherUrl" -}}
-{{- printf "%s.%s" .Values.pusher.name .Values.global.clusterDomain }}
-{{- end }}
-
-{{- define "workadventure.uploaderUrl" -}}
-{{- printf "%s.%s" .Values.uploader.name .Values.global.clusterDomain }}
-{{- end }}
-
-{{- define "workadventure.pusher.apiUrl" -}}
-{{- printf "%s:%s" (include "workadventure.back.name" .) "50051" }}
-{{- end }}
-
-{{- define "workadventure.startRoomUrl" -}}
-{{- $path := .Values.front.env.startRoomPath }}
-{{- $universe := .Values.front.env.startRoomUniverse }}
-{{- printf "/_/%s/%s%s" $universe (include "workadventure.mapsUrl" .) $path }}
-{{- end }}

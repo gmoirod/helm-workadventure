@@ -2,16 +2,14 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    component: play
-    app: workadventure
-  name: play
+    {{- include "workadventure.play.labels" . | nindent 4 }}
+  name: {{ include "workadventure.play.name" . }}
 spec:
   ports:
   - port: 3000
     protocol: TCP
     targetPort: 3000
   selector:
-    component: play
-    app: workadventure
+    {{- include "workadventure.play.selectorLabels" . | nindent 4 }}
   sessionAffinity: None
   type: ClusterIP

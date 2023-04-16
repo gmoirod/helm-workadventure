@@ -2,32 +2,30 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    component: uploader
-    app: workadventure
-  name: uploader
+    {{- include "workadventure.uploader.labels" . | nindent 4 }}
+  name: {{ include "workadventure.uploader.name" . }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      component: uploader
-      app: workadventure
+      {{- include "workadventure.uploader.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
       labels:
-        component: uploader
-        app: workadventure
+        {{- include "workadventure.uploader.selectorLabels" . | nindent 8 }}
     spec:
+      serviceAccountName: {{ include "workadventure.serviceAccountName" . }}
       containers:
         - name: uploader
           image: {{ .Values.global.imageRegistry }}/thecodingmachine/workadventure-uploader:{{ .Chart.AppVersion }}
           envFrom:
             - configMapRef:
-                name: workadventure
+                name: {{ include "workadventure.fullname" . }}
             - secretRef:
-                name: workadventure
+                name: {{ include "workadventure.fullname" . }}
           env:
             - name: REDIS_HOST
               value: {{ printf "%s-redis-headless" (include "workadventure.fullname" .) }}

@@ -2,23 +2,12 @@ global:
   imageRegistry: "docker.io"
   imagePullSecrets: []
   storageClass: ""
-  clusterDomain: "workadventure.minikube"
+  #clusterDomain: "cluster.local"
 
+domain: "workadventure.minikube"
 
 nameOverride: ""
 fullnameOverride: ""
-
-# REDIS Helm parameters
-# https://artifacthub.io/packages/helm/bitnami/redis#parameters
-redis:
-  enabled: true
-  clusterDomain: "workadventure.minikube"
-  architecture: "standalone"
-  auth:
-    enabled: false
-  serviceAccount:
-    create: false
-    name: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -44,14 +33,16 @@ env:
   startRoomUrl: "/_/global/thecodingmachine.github.io/workadventure-map-starter-kit/map.tmj"
   timezone: "Europe/Paris"
 
-
-
-
-
-
-
-
-
+# REDIS Helm parameters
+# https://artifacthub.io/packages/helm/bitnami/redis#parameters
+redis:
+  enabled: true
+  architecture: "standalone"
+  auth:
+    enabled: false
+  serviceAccount:
+    create: false
+    name: ""
 
 
 

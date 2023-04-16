@@ -2,16 +2,14 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    component: icon
-    app: workadventure
-  name: icon
+    {{- include "workadventure.icon.labels" . | nindent 4 }}
+  name: {{ include "workadventure.icon.name" . }}
 spec:
   ports:
   - port: 8080
     protocol: TCP
     targetPort: 8080
   selector:
-    component: icon
-    app: workadventure
+    {{- include "workadventure.icon.selectorLabels" . | nindent 4 }}
   sessionAffinity: None
   type: ClusterIP

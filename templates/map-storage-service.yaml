@@ -2,9 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    component: map-storage
-    app: workadventure
-  name: map-storage
+    {{- include "workadventure.map-storage.labels" . | nindent 4 }}
+  name: {{ include "workadventure.map-storage.name" . }}
 spec:
   ports:
   - name: port-1
@@ -16,7 +15,6 @@ spec:
     protocol: TCP
     targetPort: 50053
   selector:
-    component: map-storage
-    app: workadventure
+    {{- include "workadventure.map-storage.selectorLabels" . | nindent 4 }}
   sessionAffinity: None
   type: ClusterIP

@@ -2,29 +2,27 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    component: chat
-    app: workadventure
-  name: chat
+    {{- include "workadventure.chat.labels" . | nindent 4 }}
+  name: {{ include "workadventure.chat.name" . }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      component: chat
-      app: workadventure
+      {{- include "workadventure.chat.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
       labels:
-        component: chat
-        app: workadventure
+        {{- include "workadventure.chat.selectorLabels" . | nindent 8 }}
     spec:
+      serviceAccountName: {{ include "workadventure.serviceAccountName" . }}
       containers:
         - name: chat
           image: {{ .Values.global.imageRegistry }}/thecodingmachine/workadventure-chat:{{ .Chart.AppVersion }}
           envFrom:
             - configMapRef:
-                name: workadventure
+                name: {{ include "workadventure.fullname" . }}
           # env:
           #   - name: PUSHER_URL
           #     value: https://${PUSHER_HOST}
