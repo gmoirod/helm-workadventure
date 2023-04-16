@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: workadventure
+  name: workadventure
+data:
+  ACME_EMAIL: "toto@yopmail.com"
+  ADMIN_API_TOKEN: 
+  #ADMIN_API_URL: 
+  API_URL: {{ include "workadventure.back.name" . }}:50051
+  AWS_ACCESS_KEY_ID: ""
+  AWS_BUCKET: ""
+  AWS_DEFAULT_REGION: ""
+  AWS_ENDPOINT: ""  
+  BACK_HOST: {{ include "workadventure.back.name" . }}
+  BBB_URL: https://test-install.blindsidenetworks.com/bigbluebutton/
+  CHAT_HOST: chat
+  CHAT_URL: https://chat.{{ .Values.global.clusterDomain }}
+  #CONTACT_URL: 
+  DATA_DIR: ./wa
+  DEBUG_MODE: "false"
+  DISABLE_ANONYMOUS: "false"
+  DISABLE_NOTIFICATIONS: "false"
+  DOMAIN: {{ .Values.global.clusterDomain }}
+  EJABBERD_API_URI: http://ejabberd:5443/api
+  EJABBERD_DOMAIN: ejabberd.{{ .Values.global.clusterDomain }}
+  EJABBERD_HOST: ejabberd
+  EJABBERD_USER: admin
+  EJABBERD_WS_URI: wss://ejabberd.{{ .Values.global.clusterDomain }}:443/ws
+  EMBEDLY_KEY: ""
+  ENABLE_CHAT: "true"
+  ENABLE_CHAT_DISCONNECTED_LIST: "true"
+  ENABLE_CHAT_ONLINE_LIST: "true"
+  ENABLE_CHAT_UPLOAD: "true"
+  ENABLE_REPORT_ISSUES_MENU: "false"
+  ENABLE_TELEMETRY: ""
+  FRONT_HOST: play
+  HTTP_PORT: "80"
+  HTTPS_PORT: "443"
+  ICON_HOST: icon
+  JITSI_ISS: ""
+  JITSI_PRIVATE_MODE: "false"
+  JITSI_URL: meet.jit.si
+  ICON_URL: https://icon.{{ .Values.global.clusterDomain }}
+  LOG_LEVEL: WARN
+  MAP_STORAGE_HOST: map-storage
+  MAPS_HOST: maps
+  MAX_PER_GROUP: "4"
+  MAX_USERNAME_LENGTH: "10"
+  OPID_CLIENT_ID: ""
+  OPID_CLIENT_ISSUER: ""
+  OPID_LOGOUT_REDIRECT_URL: ""
+  OPID_PROFILE_SCREEN_PROVIDER: ""
+  OPID_WOKA_NAME_POLICY: ""
+  PLAYER_VARIABLES_MAX_TTL: "-1"
+  PUSHER_HOST: play
+  PUSHER_URL: https://play.{{ .Values.global.clusterDomain }}
+  REPORT_ISSUES_URL: ""
+  RESTART_POLICY: unless-stopped
+  SECURITY_EMAIL: "toto@yopmail.com"
+  SERVER_ICON: ""
+  SERVER_MOTD: ""
+  SERVER_NAME: ""
+  SKIP_RENDER_OPTIMIZATIONS: "false"
+  START_ROOM_URL: {{ .Values.env.startRoomUrl }}
+  STORE_VARIABLES_FOR_LOCAL_MAPS: "true"
+  STUN_SERVER: ""
+  TURN_PASSWORD: ""
+  TURN_SERVER: ""
+  TURN_USER: ""
+  TZ: {{ .Values.env.timezone }}
+  UPLOAD_MAX_FILESIZE: "10485760"
+  UPLOADER_HOST: uploader
+  UPLOADER_URL: https://uploader.{{ .Values.global.clusterDomain }}
+  UPLOADER_REDIS_DB_NUMBER: "0"
+  UPLOADER_REDIS_HOST: ""
+  UPLOADER_REDIS_PORT: ""
+  VERSION: {{ .Chart.AppVersion }}

@@ -1,0 +1,73 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    app: workadventure
+  name: workadventure
+spec:
+  {{- if .Values.ingress.tls.enabled }}
+  tls:
+  - hosts :
+    - chat.{{ .Values.global.clusterDomain }}
+    - play.{{ .Values.global.clusterDomain }}
+    - icon.{{ .Values.global.clusterDomain }}
+    - map-storage.{{ .Values.global.clusterDomain }}
+    - ejabberd.{{ .Values.global.clusterDomain }}
+  {{- if .Values.ingress.tls.existingSecret }}
+    secretName: {{ .Values.ingress.tls.existingSecret }}
+  {{- end }}
+  {{- end }}
+
+  rules:
+  - host: chat.{{ .Values.global.clusterDomain }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: chat
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  - host: play.{{ .Values.global.clusterDomain }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: play
+            port:
+              number: 3000
+        path: /
+        pathType: Prefix
+  - host: icon.{{ .Values.global.clusterDomain }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: icon
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  - host: map-storage.{{ .Values.global.clusterDomain }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: map-storage
+            port:
+              number: 3000
+        path: /
+        pathType: Prefix
+  - host: ejabberd.{{ .Values.global.clusterDomain }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: ejabberd
+            port:
+              number: 5443
+        path: /
+        pathType: Prefix
+{{- end }}

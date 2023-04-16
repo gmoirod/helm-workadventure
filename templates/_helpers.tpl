@@ -35,11 +35,18 @@ Common labels
 */}}
 {{- define "workadventure.labels" -}}
 helm.sh/chart: {{ include "workadventure.chart" . }}
-{{ include "workadventure.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "workadventure.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "workadventure.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
@@ -53,20 +60,44 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
-{{/*
-Selector labels
-*/}}
-{{- define "workadventure.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "workadventure.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
+
+
+
+
+
+
+
+
+
+
+
+
+#######################
 
 {{/*
 Back object names
 */}}
 {{- define "workadventure.back.name" -}}
-{{- printf "%s-%s" (include "workadventure.fullname" .) .Values.back.name | trunc 63 | trimSuffix "-" }}
+{{- printf "%s-%s" (include "workadventure.fullname" .) "back" | trunc 63 | trimSuffix "-" }}
 {{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "workadventure.back.selectorLabels" -}}
+{{ include "workadventure.selectorLabels" . }}
+app.kubernetes.io/component: back
+{{- end }}
+
+{{/*
+Common labels
+*/}}
+{{- define "workadventure.back.labels" -}}
+{{ include "workadventure.labels" . }}
+{{ include "workadventure.back.selectorLabels" . }}
+{{- end }}
+
+#######################
 
 {{/*
 Front object names
@@ -97,15 +128,15 @@ Maps object names
 {{- end }}
 
 {{- define "workadventure.mapsUrl" -}}
-{{- printf "%s.%s" .Values.maps.name .Values.domain }}
+{{- printf "%s.%s" .Values.maps.name .Values.global.clusterDomain }}
 {{- end }}
 
 {{- define "workadventure.pusherUrl" -}}
-{{- printf "%s.%s" .Values.pusher.name .Values.domain }}
+{{- printf "%s.%s" .Values.pusher.name .Values.global.clusterDomain }}
 {{- end }}
 
 {{- define "workadventure.uploaderUrl" -}}
-{{- printf "%s.%s" .Values.uploader.name .Values.domain }}
+{{- printf "%s.%s" .Values.uploader.name .Values.global.clusterDomain }}
 {{- end }}
 
 {{- define "workadventure.pusher.apiUrl" -}}

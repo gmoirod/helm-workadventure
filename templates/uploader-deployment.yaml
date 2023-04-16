@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: uploader
+    app: workadventure
+  name: uploader
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: uploader
+      app: workadventure
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: uploader
+        app: workadventure
+    spec:
+      containers:
+        - name: uploader
+          image: {{ .Values.global.imageRegistry }}/thecodingmachine/workadventure-uploader:{{ .Chart.AppVersion }}
+          envFrom:
+            - configMapRef:
+                name: workadventure
+            - secretRef:
+                name: workadventure
+          env:
+            - name: REDIS_HOST
+              value: {{ printf "%s-redis-headless" (include "workadventure.fullname" .) }}
+            - name: REDIS_PORT
+              value: "6379"
+          resources: {}
+      restartPolicy: Always

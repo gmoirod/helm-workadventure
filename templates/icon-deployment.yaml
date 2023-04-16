@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: icon
+    app: workadventure
+  name: icon
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: icon
+      app: workadventure
+  template:
+    metadata:
+      labels:
+        component: icon
+        app: workadventure
+    spec:
+      containers:
+        - name: icon
+          image: {{ .Values.global.imageRegistry }}/matthiasluedtke/iconserver:v3.13.0
+          ports:
+            - containerPort: 8080
+              name: http
+          resources: {}
+      restartPolicy: Always

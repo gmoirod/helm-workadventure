@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: play
+    app: workadventure
+  name: play
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: play
+      app: workadventure
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: play
+        app: workadventure
+    spec:
+      containers:
+        - name: play
+          image: {{ .Values.global.imageRegistry }}/thecodingmachine/workadventure-play:{{ .Chart.AppVersion }}
+          envFrom:
+            - configMapRef:
+                name: workadventure
+            - secretRef:
+                name: workadventure
+          ports:
+            - containerPort: 3000
+          resources: {}
+      restartPolicy: Always

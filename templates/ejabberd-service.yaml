@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    component: ejabberd
+    app: workadventure
+  name: ejabberd
+spec:
+  ports:
+    - name: "5443"
+      port: 5443
+      targetPort: 5443
+  selector:
+    component: ejabberd
+    app: workadventure

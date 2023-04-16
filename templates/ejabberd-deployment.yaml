@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: ejabberd
+    app: workadventure
+  name: ejabberd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: ejabberd
+      app: workadventure
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        component: ejabberd
+        app: workadventure
+    spec:
+      initContainers:
+        - name: init
+          image: {{ .Values.global.imageRegistry }}/workadventure/ejabberd:v1
+          command:
+            - /bin/sh
+            - -c
+            - cp /opt/ejabberd/conf/* /tmp/ejabberd/conf/
+          volumeMounts:
+            - name: ejabberd-template
+              mountPath: /opt/ejabberd/conf/ejabberd.template.yml
+              subPath: ejabberd.template.yml
+            - name: conf
+              mountPath: /tmp/ejabberd/conf
+      containers:
+        - name: ejabberd
+          image: {{ .Values.global.imageRegistry }}/workadventure/ejabberd:v1
+          envFrom:
+            - configMapRef:
+                name: workadventure
+            - secretRef:
+                name: workadventure
+          env:
+            - name: CTL_ON_CREATE
+              value: register admin ejabberd.{{ .Values.global.clusterDomain }} mySecretPassword
+            - name: JWT_SECRET
+              value: MyJwtSecret
+          ports:
+            - containerPort: 5443
+          resources: {}
+          volumeMounts:
+            - name: conf
+              mountPath: /opt/ejabberd/conf
+      restartPolicy: Always
+      volumes:
+        - name: ejabberd-template
+          configMap:
+            name: ejabberd
+            #defaultMode: 0666
+        - name: conf
+          emptyDir: {}

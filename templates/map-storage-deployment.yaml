@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: map-storage
+    app: workadventure
+  name: map-storage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: map-storage
+      app: workadventure
+  template:
+    metadata:
+      labels:
+        component: map-storage
+        app: workadventure
+    spec:
+      containers:
+        - name: map-storage
+          image: {{ .Values.global.imageRegistry }}/thecodingmachine/workadventure-map-storage:{{ .Chart.AppVersion }}
+          env:
+            - name: PROMETHEUS_AUTHORIZATION_TOKEN
+              value: ""
+            - name: AUTHENTICATION_STRATEGY
+              value: "Basic"
+            - name: AUTHENTICATION_USER
+              value: "john.doe"
+            - name: AUTHENTICATION_PASSWORD
+              value: "password"
+          ports:
+            - containerPort: 3000
+            - containerPort: 50053
+          resources: {}
+      restartPolicy: Always

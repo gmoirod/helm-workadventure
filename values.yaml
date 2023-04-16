@@ -1,239 +1,24 @@
-# Default values for workadventure.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+global:
+  imageRegistry: "docker.io"
+  imagePullSecrets: []
+  storageClass: ""
+  clusterDomain: "workadventure.minikube"
 
-imagePullSecrets: []
+
 nameOverride: ""
 fullnameOverride: ""
 
-image:
-  tag: ""
-
-domain: "workadventure.minikube"
-
-# Env
-env:
-  secretKey: "tempSecretKeyNeedsToChange"
-  adminApiToken: "123"
-  jitsiIss: ""
-  jitsiUrl: "meet.jit.si"
-  secretJitsiKey: ""
-  jitsiPrivateMode: false
-  debugMode: false
-
-#################### workadventure-back ####################
-back:
-  name: "back"
-  replicaCount: 2
-
-  image:
-    repository: "thecodingmachine/workadventure-back"
-    pullPolicy: IfNotPresent
-
-  # Env back
-  env: {}    
-
-  extraEnvs: 
-    - name: KEY
-      value: value
-
-  autoscaling:
-    enabled: true
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    targetMemoryUtilizationPercentage: 80
-
-  service:
-    type: ClusterIP
-    port: 80
-
-  ingress:
-    enabled: true
-    annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: api # FQDN is computed with this and domain
-        paths: [/]
-    tls:
-      - secretName: back-tls      
-        hosts:
-          - api # FQDN is computed with this and domain
-#################### workadventure-back ####################
-
-#################### workadventure-front ####################
-front:
-  name: "front"
-  replicaCount: 1
-
-  image:
-    repository: "thecodingmachine/workadventure-front"
-    pullPolicy: IfNotPresent
-
-  # Env front
-  env:
-    turnServer: "turn:coturn.workadventu.re:443,turns:coturn.workadventu.re:443"
-    turnUser: "workadventure"
-    turnPassword: "WorkAdventure123"
-    startRoomUniverse: "global"
-    startRoomPath: "/Floor0/floor0.json"
-
-  extraEnvs: 
-    - name: KEY
-      value: value
-
-  autoscaling:
-    enabled: true
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    targetMemoryUtilizationPercentage: 80
-
-  service:
-    type: ClusterIP
-    port: 80
-
-  ingress:
-    enabled: true
-    annotations:
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: play
-        paths: [/]
-    tls:
-      - secretName: front-tls
-        hosts:
-          - play
-  
-#################### workadventure-front ####################
-
-
-#################### workadventure-pusher ####################
-pusher:
-  name: "pusher"
-  replicaCount: 2
-
-  image:
-    repository: "thecodingmachine/workadventure-pusher"
-    pullPolicy: IfNotPresent
-
-  # Env front
-  env: {}
-
-  extraEnvs: 
-    - name: KEY
-      value: value
-
-  autoscaling:
-    enabled: true
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    targetMemoryUtilizationPercentage: 80
-
-  service:
-    type: ClusterIP
-    port: 80
-
-  ingress:
-    enabled: true
-    annotations:
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: pusher
-        paths: [/]
-    tls:
-      - secretName: pusher-tls
-        hosts:
-          - pusher  
-#################### workadventure-pusher ####################
-
-
-#################### workadventure-uploader ####################
-uploader:
-  name: "uploader"
-  replicaCount: 2
-
-  image:
-    repository: "thecodingmachine/workadventure-uploader"
-    pullPolicy: IfNotPresent
-
-  # Env front
-  env: {}
-
-  extraEnvs: 
-    - name: KEY
-      value: value
-
-  autoscaling:
-    enabled: true
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    targetMemoryUtilizationPercentage: 80
-
-  service:
-    type: ClusterIP
-    port: 80
-
-  ingress:
-    enabled: true
-    annotations:
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: uploader
-        paths: [/]
-    tls:
-      - secretName: uploader-tls
-        hosts:
-          - uploader
-#################### workadventure-uploader ####################
-
-
-#################### workadventure-maps ####################
-maps:
-  name: "maps"
-  replicaCount: 2
-
-  image:
-    repository: "thecodingmachine/workadventure-maps"
-    pullPolicy: IfNotPresent
-
-  # Env front
-  env: {}
-
-  extraEnvs: 
-    - name: KEY
-      value: value
-
-  autoscaling:
-    enabled: true
-    minReplicas: 1
-    maxReplicas: 100
-    targetCPUUtilizationPercentage: 80
-    targetMemoryUtilizationPercentage: 80
-
-  service:
-    type: ClusterIP
-    port: 80
-
-  ingress:
-    enabled: true
-    annotations:
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: maps
-        paths: [/]
-    tls:
-      - secretName: maps-tls
-        hosts:
-          - maps 
-#################### workadventure-maps ####################
+# REDIS Helm parameters
+# https://artifacthub.io/packages/helm/bitnami/redis#parameters
+redis:
+  enabled: true
+  clusterDomain: "workadventure.minikube"
+  architecture: "standalone"
+  auth:
+    enabled: false
+  serviceAccount:
+    create: false
+    name: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -243,6 +28,124 @@ serviceAccount:
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
+
+# Enable TLS and give a secret containing TLS cert/key
+ingress:
+  enabled: true
+  tls:
+    enabled: true
+    existingSecret: ""
+
+# TODO : Give a way to use Cloud LoadBalancers by allowing to use NodePort and Loadbalancer services
+# service:
+#   type: ""
+
+env:
+  startRoomUrl: "/_/global/thecodingmachine.github.io/workadventure-map-starter-kit/map.tmj"
+  timezone: "Europe/Paris"
+
+
+
+
+
+
+
+
+
+
+
+
+
+############################
+############################
+
+
+
+
+
+# Default values for workadventure.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+# Env
+# env:
+#   secretKey: "tempSecretKeyNeedsToChange"
+#   adminApiToken: "123"
+#   jitsiIss: ""
+#   jitsiUrl: "meet.jit.si"
+#   secretJitsiKey: ""
+#   jitsiPrivateMode: false
+#   debugMode: false
+
+#################### workadventure-back ####################
+back:
+
+  # autoscaling:
+  #   enabled: true
+  #   minReplicas: 1
+  #   maxReplicas: 100
+  #   targetCPUUtilizationPercentage: 80
+  #   targetMemoryUtilizationPercentage: 80
+
+#################### workadventure-back ####################
+
+#################### workadventure-front ####################
+front:
+  # # Env front
+  # env:
+  #   turnServer: "turn:coturn.workadventu.re:443,turns:coturn.workadventu.re:443"
+  #   turnUser: "workadventure"
+  #   turnPassword: "WorkAdventure123"
+  #   startRoomUniverse: "global"
+  #   startRoomPath: "/Floor0/floor0.json"
+
+  # autoscaling:
+  #   enabled: true
+  #   minReplicas: 1
+  #   maxReplicas: 100
+  #   targetCPUUtilizationPercentage: 80
+  #   targetMemoryUtilizationPercentage: 80
+
+#################### workadventure-front ####################
+
+
+#################### workadventure-pusher ####################
+pusher:
+  # autoscaling:
+  #   enabled: true
+  #   minReplicas: 1
+  #   maxReplicas: 100
+  #   targetCPUUtilizationPercentage: 80
+  #   targetMemoryUtilizationPercentage: 80
+#################### workadventure-pusher ####################
+
+
+#################### workadventure-uploader ####################
+uploader:
+  # autoscaling:
+  #   enabled: true
+  #   minReplicas: 1
+  #   maxReplicas: 100
+  #   targetCPUUtilizationPercentage: 80
+  #   targetMemoryUtilizationPercentage: 80
+
+#################### workadventure-uploader ####################
+
+
+#################### workadventure-maps ####################
+maps:
+
+  # autoscaling:
+  #   enabled: true
+  #   minReplicas: 1
+  #   maxReplicas: 100
+  #   targetCPUUtilizationPercentage: 80
+  #   targetMemoryUtilizationPercentage: 80
+
+#################### workadventure-maps ####################
+
+
 
 podAnnotations: {}
 

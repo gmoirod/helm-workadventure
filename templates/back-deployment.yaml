@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    {{- include "workadventure.back.labels" . | nindent 4 }}
+  name: {{ include "workadventure.back.name" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "workadventure.back.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        {{- include "workadventure.back.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "workadventure.serviceAccountName" . }}
+      containers:
+        - name: back
+          image: {{ .Values.global.imageRegistry }}/thecodingmachine/workadventure-back:{{ .Chart.AppVersion }}
+          envFrom:
+            - configMapRef:
+                name: workadventure
+            - secretRef:
+                name: workadventure
+          env:
+            - name: MAP_STORAGE_URL
+              value: map-storage:50053
+            - name: PLAY_URL
+              value: http://play:3000
+            - name: PUBLIC_MAP_STORAGE_URL
+              value: https://map-storage.{{ .Values.global.clusterDomain }}
+            - name: REDIS_HOST
+              value: {{ printf "%s-redis-headless" (include "workadventure.fullname" .) }}
+            - name: REDIS_PORT
+              value: "6379"
+          ports:
+            - containerPort: 8080
+              name: http
+            - containerPort: 50051
+          resources: {}
+      restartPolicy: Always
