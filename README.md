@@ -25,7 +25,7 @@ helm install myrelease .
 4. With self-signed TLS certificates, make them trust by your browser by going to https://chat.workadventure.minikube/, https://icon.workadventure.minikube/, https://map-storage.workadventure.minikube/, https://ejabberd.workadventure.minikube/
 5. Then you can start by going to https://play.workadventure.minikube/
 
-You can also start another universe with another map. For example : https://play.workadventure.minikube/_/anyuniverse/gparant.github.io/tcm-client/Demo/demo-v1.json
+You can also start another universe with another map. For example : https://play.workadventure.minikube/_/anyuniverse/thecodingmachine.github.io/workadventure-map-forumphp/map.json
 
 ### Install workadventure with a specific domain
 ```
